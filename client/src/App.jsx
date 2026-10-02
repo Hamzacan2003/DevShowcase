@@ -201,7 +201,9 @@ export default function App() {
     };
 
     try {
-      const response = await axios.post('http://localhost:5137/api/contact', payload, {
+     // Yeni Hali (Canlı Render URL'i):
+// Yeni hali:
+const response = await axios.post('https://devshowcase-kl6s.onrender.com/api/contact', payload, {
         headers: { 'Content-Type': 'application/json' }
       });
 
