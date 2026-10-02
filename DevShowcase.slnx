@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DevShowcase.API/DevShowcase.API.csproj" />
+  <Project Path="DevShowcase.Business/DevShowcase.Business.csproj" />
+  <Project Path="DevShowcase.Core/DevShowcase.Core.csproj" />
+  <Project Path="DevShowcase.DataAccess/DevShowcase.DataAccess.csproj" />
+</Solution>
