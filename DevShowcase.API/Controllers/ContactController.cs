@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using MimeKit;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 
 namespace DevShowcase.API.Controllers
 {
@@ -12,6 +12,7 @@ namespace DevShowcase.API.Controllers
     public class ContactController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private static readonly HttpClient _httpClient = new HttpClient();
 
         public ContactController(IConfiguration configuration)
         {
@@ -31,7 +32,7 @@ namespace DevShowcase.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ContactInquiryDto dto)
         {
-            // Honeypot kontrolü
+            // Honeypot bot tuzağı kontrolü
             if (!string.IsNullOrEmpty(dto.Honeypot))
             {
                 return Ok(new { success = true, message = "Mesajınız başarıyla iletildi." });
@@ -39,10 +40,14 @@ namespace DevShowcase.API.Controllers
 
             try
             {
-                string senderEmail = _configuration["MailSettings:User"] ?? "hamzacana98@gmail.com";
-                string password = (_configuration["MailSettings:Password"] ?? "ljcneqmvdtmmjwae").Trim();
+                // Resend API Anahtarı (Render Environment'tan veya appsettings'ten okunur)
+                string apiKey = _configuration["RESEND_API_KEY"]
+                                ?? _configuration["MailSettings:ResendApiKey"]
+                                ?? "SENIN_RESEND_API_KEYIN"; // Buraya doğrudan kendi re_... key'ini de yazabilirsin
+
                 string toEmail = _configuration["MailSettings:To"] ?? "hamzacana98@gmail.com";
 
+                // Tablo Formatındaki Şık HTML Şablonu
                 string htmlBody = $@"
                 <div style='font-family: Arial, sans-serif; background-color: #040812; padding: 30px; color: #f8fafc;'>
                     <div style='max-width: 620px; margin: 0 auto; background-color: #0f172a; border-radius: 16px; border: 1px solid #1e293b; padding: 28px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);'>
@@ -77,29 +82,35 @@ namespace DevShowcase.API.Controllers
                     </div>
                 </div>";
 
-                var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("DevShowcase Portfolyo", senderEmail));
-                message.To.Add(new MailboxAddress("Hamza Can Altıntop", toEmail));
-                message.Subject = $"[Yeni Talep] {dto.Topic} - {dto.FullName}";
+                // Resend JSON Payload Hazırlığı
+                // Resend ücretsiz planda varsayılan 'onboarding@resend.dev' adresinden gönderim sağlar
+                var emailPayload = new
+                {
+                    from = "Portfolio <onboarding@resend.dev>",
+                    to = new[] { toEmail },
+                    reply_to = dto.Email,
+                    subject = $"[Yeni Talep] {dto.Topic} - {dto.FullName}",
+                    html = htmlBody
+                };
 
-                var bodyBuilder = new BodyBuilder { HtmlBody = htmlBody };
-                message.Body = bodyBuilder.ToMessageBody();
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://api.resend.com/emails");
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+                requestMessage.Content = new StringContent(JsonSerializer.Serialize(emailPayload), Encoding.UTF8, "application/json");
 
-                using var client = new SmtpClient();
-                client.CheckCertificateRevocation = false;
-                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                var response = await _httpClient.SendAsync(requestMessage);
 
-                // Bulut sunucu firewall engeline takılmayan Port 465 (SSL):
-                await client.ConnectAsync("smtp.gmail.com", 465, SecureSocketOptions.SslOnConnect);
-                await client.AuthenticateAsync(senderEmail, password);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(new { success = true, message = "Mesajınız başarıyla iletildi." });
+                }
 
-                return Ok(new { success = true, message = "Mesajınız başarıyla iletildi." });
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"[RESEND HATA]: {errorContent}");
+                return StatusCode(500, new { success = false, message = "Resend API Hatası: " + errorContent });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "E-posta gönderilirken hata oluştu: " + ex.Message });
+                return StatusCode(500, new { success = false, message = "Hata: " + ex.Message });
             }
         }
     }
