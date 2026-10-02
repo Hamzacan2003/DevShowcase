@@ -16,18 +16,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IContactInquiryRepository, ContactInquiryRepository>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
-// CORS Yapılandırması
+// CORS Yapılandırması (Vercel ve Localhost için tam izin)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.SetIsOriginAllowed(origin => true) // Vercel canlı domaini ve preview linklerinin tümüne izin verir
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// 1. IP BAZLI ANTI-SPAM RATE LIMITING
+// IP Bazlı Anti-Spam Rate Limiting (Dakikada en fazla 2 istek)
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -38,10 +38,10 @@ builder.Services.AddRateLimiter(options =>
 
         return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ => new FixedWindowRateLimiterOptions
         {
-            PermitLimit = 2,                          // 1 dakikada izin verilen istek sayısı
-            Window = TimeSpan.FromMinutes(1),          // Zaman aralığı
+            PermitLimit = 2,
+            Window = TimeSpan.FromMinutes(1),
             QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0                            // Kuyruk yok, direkt 429 kes
+            QueueLimit = 0
         });
     });
 });
@@ -52,18 +52,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger (Canlı ortamda da test edebilmek için if bloğu kaldırıldı)
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// Middleware Sıralaması
+// Middleware Sıralaması (Kritik: UseCors en başta olmalıdır)
 app.UseCors("AllowReact");
 
-app.UseRateLimiter(); // Rate Limiter Devrede
+app.UseRateLimiter();
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
