@@ -43,17 +43,15 @@ namespace DevShowcase.API.Controllers
                 // Resend API Anahtarı (Render Environment'tan veya appsettings'ten okunur)
                 string apiKey = _configuration["RESEND_API_KEY"]
                                 ?? _configuration["MailSettings:ResendApiKey"]
-                                ?? "SENIN_RESEND_API_KEYIN"; // Buraya doğrudan kendi re_... key'ini de yazabilirsin
+                                ?? string.Empty;
 
-                string toEmail = _configuration["MailSettings:To"] ?? "hamzacana98@gmail.com";
-
-                // Tablo Formatındaki Şık HTML Şablonu
+                // Tablo Formatındaki Şık HTML E-posta Şablonu
                 string htmlBody = $@"
                 <div style='font-family: Arial, sans-serif; background-color: #040812; padding: 30px; color: #f8fafc;'>
                     <div style='max-width: 620px; margin: 0 auto; background-color: #0f172a; border-radius: 16px; border: 1px solid #1e293b; padding: 28px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);'>
                         <div style='border-bottom: 2px solid #00f2fe; padding-bottom: 12px; margin-bottom: 20px;'>
                             <h2 style='color: #ffffff; margin: 0; font-size: 22px;'>🚀 Yeni Portfolyo Mesajı</h2>
-                            <p style='color: #00f2fe; font-size: 13px; margin: 5px 0 0 0; font-family: monospace;'>Hamza Can Altıntop - Portfolio Contact Form</p>
+                            <p style='color: #00f2fe; font-size: 13px; margin: 5px 0 0 0; font-family: monospace;'>Portfolio Contact Form</p>
                         </div>
                         <table style='width: 100%; border-collapse: collapse; margin-top: 15px;'>
                             <tr style='background-color: #090e1a;'>
@@ -82,12 +80,11 @@ namespace DevShowcase.API.Controllers
                     </div>
                 </div>";
 
-                // Resend JSON Payload Hazırlığı
-                // Resend ücretsiz planda varsayılan 'onboarding@resend.dev' adresinden gönderim sağlar
+                // Resend Payload: Alıcı kesin olarak doğrulanmış 'hamzacana98@gmail.com' adresi yapıldı
                 var emailPayload = new
                 {
                     from = "Portfolio <onboarding@resend.dev>",
-                    to = new[] { toEmail },
+                    to = new[] { "hamzacana98@gmail.com" },
                     reply_to = dto.Email,
                     subject = $"[Yeni Talep] {dto.Topic} - {dto.FullName}",
                     html = htmlBody
@@ -105,7 +102,6 @@ namespace DevShowcase.API.Controllers
                 }
 
                 var errorContent = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"[RESEND HATA]: {errorContent}");
                 return StatusCode(500, new { success = false, message = "Resend API Hatası: " + errorContent });
             }
             catch (Exception ex)
