@@ -300,7 +300,7 @@ export default function App() {
           {/* Sosyal Medya Butonları */}
           <div className="flex items-center justify-center md:justify-end gap-3 shrink-0">
             <a 
-              href="https://github.com/HAMZA-CAN-ALTINTOP" 
+              href="https://github.com/Hamzacan2003" 
               target="_blank" 
               rel="noreferrer"
               className="p-2.5 sm:p-3 bg-slate-900 border border-slate-800 rounded-xl hover:border-cyan-500 hover:text-cyan-400 transition-all text-slate-300"
@@ -629,7 +629,7 @@ export default function App() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/50">Bulut Klinik Sistemi</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-cyan-400 text-xs font-mono">
+                  <a href="https://clinic-app-git-main-can-73b0.vercel.app/" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-cyan-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
@@ -647,7 +647,7 @@ export default function App() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/50">Yapay Zeka / NLP</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-indigo-400 text-xs font-mono">
+                  <a href="https://github.com/Hamzacan2003" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-indigo-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
@@ -665,7 +665,7 @@ export default function App() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50">Web3 / IPFS</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-emerald-400 text-xs font-mono">
+                  <a href="https://github.com/Hamzacan2003" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-emerald-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
@@ -683,7 +683,7 @@ export default function App() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/50">Ticari E-Ticaret</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-cyan-400 text-xs font-mono">
+                  <a href="https://github.com/Hamzacan2003" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-cyan-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
@@ -701,7 +701,7 @@ export default function App() {
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/50">Otomasyon</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-indigo-400 text-xs font-mono">
+                  <a href="https://luxecafe-frontendd.vercel.app/pos" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-indigo-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
@@ -714,12 +714,28 @@ export default function App() {
                 <span>C# .NET</span> • <span>PostgreSQL</span> • <span>Docker</span>
               </div>
             </div>
-
+<div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 sm:p-6 flex flex-col justify-between hover:border-cyan-500/50 transition-all">
+  <div>
+    <div className="flex justify-between items-center mb-3">
+      <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50">Pazar Yeri</span>
+      <a href="https://guvenle-al-lz8qkpsh7-can-73b0.vercel.app/" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-emerald-400 text-xs font-mono">
+        İncele ↗
+      </a>
+    </div>
+    <h4 className="text-base sm:text-lg font-bold text-white mb-2">Güvenle Al-Sat</h4>
+    <p className="text-xs text-slate-400 leading-relaxed mb-4">
+      Sahibinden benzeri; kategori filtreleme, detaylı ürün arama, ilan verme, kullanıcı paneli ve güvenli işlem modüllerine sahip C2C ikinci el alım-satım platformu.
+    </p>
+  </div>
+  <div className="pt-3 border-t border-slate-800/80 flex flex-wrap gap-1 text-[11px] font-mono text-slate-300">
+    <span>C# .NET Core</span> • <span>React</span> • <span>PostgreSQL</span>
+  </div>
+</div>
             <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 sm:p-6 flex flex-col justify-between hover:border-cyan-500/50 transition-all">
               <div>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50">Mekânsal Harita</span>
-                  <a href="https://github.com/HAMZA-CAN-ALTINTOP" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-emerald-400 text-xs font-mono">
+                  <a href="https://github.com/Hamzacan2003" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-emerald-400 text-xs font-mono">
                     İncele ↗
                   </a>
                 </div>
